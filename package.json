@@ -4,6 +4,6 @@
   "private":true,
   "description":"Server-authoritative play-money poker room",
   "engines":{"node":">=20"},
-  "scripts":{"start":"node server.js","test":"node test.js"},
+  "scripts":{"start":"node test.js && node server.js","test":"node test.js"},
   "dependencies":{"ws":"^8.18.0"}
 }
