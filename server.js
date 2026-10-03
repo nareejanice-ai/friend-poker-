@@ -91,7 +91,7 @@ wss.on('connection',ws=>{try{ws._socket&&ws._socket.setNoDelay(true)}catch{};let
  const g=rooms.get(ws.room);if(g){const p=g.players.find(x=>x.id===pid);if(p){g.chat.push({id:uid(),name:p.name,text:String(m.text||'').slice(0,120),ts:Date.now()});broadcast(g)}}
 }else if(m.type==='rejoin'){
  const g=rooms.get(String(m.room||'').toUpperCase());if(g){const p=g.players.find(x=>x.id===pid);if(p&&!p.leaving){p.connected=true;ws.room=g.room;broadcast(g)}}
-}}}});ws.on('close',()=>{if(pid)sockets.delete(pid);const g=rooms.get(ws.room);if(g){const p=g.players.find(x=>x.id===pid);if(p)p.connected=false;broadcast(g)}})});
+}});ws.on('close',()=>{if(pid)sockets.delete(pid);const g=rooms.get(ws.room);if(g){const p=g.players.find(x=>x.id===pid);if(p)p.connected=false;broadcast(g)}})});
 function startServer(){server.listen(PORT,'0.0.0.0',()=>{console.log('FRIEND POKER v2 listening',PORT);setInterval(()=>{for(const ws of wss.clients){if(ws.isAlive===false){try{ws.terminate()}catch{};continue}ws.isAlive=false;try{ws.ping()}catch{}}},25000)});return server}
 wss.on('connection',ws=>{ws.isAlive=true;ws.on('pong',()=>ws.isAlive=true)});
 if(require.main===module)startServer();
