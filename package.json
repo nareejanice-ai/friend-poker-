@@ -1,8 +1,9 @@
 {
-  "name": "friend-poker",
-  "version": "1.0.0",
-  "private": true,
-  "description": "Private play-money poker room for friends",
-  "engines": { "node": ">=18" },
-  "scripts": { "start": "node server.js" }
+  "name":"friend-poker-v2",
+  "version":"2.0.0",
+  "private":true,
+  "description":"Server-authoritative play-money poker room",
+  "engines":{"node":">=20"},
+  "scripts":{"start":"node server.js","test":"node test.js"},
+  "dependencies":{"ws":"^8.18.0"}
 }
