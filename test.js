@@ -1,3 +1,3 @@
 const {evaluate5,bestHand}=require('./server');
 function c(s){return [...s.matchAll(/(10|[2-9TJQKA])([SHDC])/g)].map(m=>({r:m[1]==='10'?'T':m[1],s:{S:'♠',H:'♥',D:'♦',C:'♣'}[m[2]]}))}
-const sf=evaluate5(c('AS KS QS JS 10S'));if(sf.cat!==8)throw Error('straight flush');const fh=evaluate5(c('AH AD AC KS KD'));if(fh.cat!==6)throw Error('full house');const plo=bestHand(c('AS AH 2C 3D'),c('AC AD KS QS JS'),'plo');if(plo.score.cat!==7)throw Error('plo exact 2+3');console.log('ENGINE TEST PASS');process.exit(0);
+const tests=[()=>evaluate5(c('AS KS QS JS 10S')).cat===8,()=>evaluate5(c('AH AD AC KS KD')).cat===6,()=>evaluate5(c('AS 5H 4D 3C 2S')).cat===4,()=>bestHand(c('AS AH 2C 3D'),c('AC AD KS QS JS'),'plo').score.cat===7];if(tests.some(t=>!t()))throw Error('ENGINE TEST FAIL');console.log('ENGINE TEST PASS');
