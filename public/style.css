@@ -3,7 +3,7 @@
 
 header{gap:8px}.room-head{flex:1}.nav-btn{border:1px solid #34425a;background:#101824;color:#e8edf5;border-radius:10px;padding:7px 9px;font-size:11px;font-weight:800}.room-actions{display:grid;grid-template-columns:1fr;gap:6px;margin-top:7px}.sitout,.start{width:100%;border:0;border-radius:12px;padding:12px;color:#fff;background:#26344a;font-weight:850}.sitout.ready{background:linear-gradient(#2fa86c,#17734a)}.seat .name{max-width:84px;margin:auto}.seat.folded .hole{visibility:hidden}
 
-.wager{position:absolute;left:50%;top:50%;transform:translate(calc(-50% + var(--dx)*.42),calc(-50% + var(--dy)*.42));display:flex;align-items:center;gap:4px;z-index:7;pointer-events:none}
+.wager{position:absolute;left:50%;top:50%;transform:translate(calc(-50% + var(--tx)),calc(-50% + var(--ty)));display:flex;align-items:center;gap:4px;z-index:7;pointer-events:none}
 .wager span{font-size:9px;font-weight:900;color:#fff;background:#09101acc;border:1px solid #ffffff26;border-radius:9px;padding:2px 5px;box-shadow:0 2px 6px #0007}
 .chip-stack{position:relative;width:18px;height:16px}.chip-stack i{position:absolute;left:1px;width:16px;height:6px;border-radius:50%;background:linear-gradient(#f4cc58,#b37d17);border:1px solid #f9e19a;box-shadow:0 1px 2px #0009}.chip-stack i:nth-child(1){bottom:0}.chip-stack i:nth-child(2){bottom:4px}.chip-stack i:nth-child(3){bottom:8px}
 .show-cards{width:100%;border:0;border-radius:12px;padding:12px;color:#fff;background:linear-gradient(#5d6ee8,#3947ad);font-weight:850}
