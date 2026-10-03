@@ -83,7 +83,7 @@ wss.on('connection',ws=>{try{ws._socket&&ws._socket.setNoDelay(true)}catch{};let
    try{ws.send(JSON.stringify({type:'action_result',actionId:m.actionId,ok,state:publicState(g,pid)}))}catch{}
  }
 }else if(m.type==='sitout'){
- const g=rooms.get(ws.room);if(g){const i=g.players.findIndex(x=>x.id===pid),p=g.players[i];if(p){const want=!!m.value;p.sittingOut=want;if(want&&p.inHand&&!p.fold&&['preflop','flop','turn','river'].includes(g.street))externalFold(g,i);else{broadcast(g);if(!want&&g.started&&g.street==='waiting')maybeWaitOrStart(g)}}}
+ const g=rooms.get(ws.room);if(g){const p=g.players.find(x=>x.id===pid);if(p){p.sittingOut=!!m.value;broadcast(g);if(!p.sittingOut&&g.started&&g.street==='waiting')maybeWaitOrStart(g)}}
 }else if(m.type==='leave'){
  const g=rooms.get(ws.room);if(g){const i=g.players.findIndex(x=>x.id===pid),p=g.players[i];if(p){p.sittingOut=true;p.leaving=true;p.connected=false;ensureHost(g);if(p.inHand&&!p.fold&&['preflop','flop','turn','river'].includes(g.street))externalFold(g,i);else if(!g.started||g.street==='waiting'){cleanupLeavers(g);if(rooms.has(g.room))broadcast(g)}else broadcast(g)}}
  ws.room=null;try{ws.send(JSON.stringify({type:'left'}))}catch{}
