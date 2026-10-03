@@ -17,9 +17,20 @@ function combos(a,k){const out=[];const rec=(s,c)=>{if(c.length===k){out.push(c.
 const cmp=(a,b)=>{if(a.cat!==b.cat)return a.cat-b.cat;for(let i=0;i<Math.max(a.k.length,b.k.length);i++){const d=(a.k[i]||0)-(b.k[i]||0);if(d)return d}return 0};
 function bestHand(hole,board,variant){let best=null,bestCards=null;if(variant==='plo'){for(const h of combos(hole,2))for(const b of combos(board,3)){const c=[...h,...b],e=evaluate5(c);if(!best||cmp(e,best)>0){best=e;bestCards={hole:h,board:b}}}}else{for(const c of combos([...hole,...board],5)){const e=evaluate5(c);if(!best||cmp(e,best)>0){best=e;bestCards=c}}}return{score:best,cards:bestCards}}
 const handNames=['ไพ่สูง','หนึ่งคู่','สองคู่','ตอง','สเตรท','ฟลัช','ฟูลเฮาส์','โฟร์การ์ด','สเตรทฟลัช'];
+function currentBestName(g,p){
+ if(!p||!p.inHand||p.fold||!p.hole?.length)return null;
+ if(g.variant==='plo'){
+   if(p.hole.length<4||g.board.length<3)return g.street==='preflop'?'รอ Flop':null;
+   const b=bestHand(p.hole,g.board,'plo');return b?.score?handNames[b.score.cat]:null;
+ }
+ const all=[...p.hole,...g.board];
+ if(all.length>=5){const b=bestHand(p.hole,g.board,'holdem');return b?.score?handNames[b.score.cat]:null}
+ if(p.hole.length===2)return p.hole[0].r===p.hole[1].r?'หนึ่งคู่':'ไพ่สูง';
+ return null;
+}
 function publicState(g,viewer){
  const now=Date.now(),levelRemain=g.mode==='tournament'&&g.tournamentStartedAt?Math.max(0,480-Math.floor((now-g.tournamentStartedAt)%480000/1000)):null;
- return{rev:g.rev||0,room:g.room,hostId:g.hostId,mode:g.mode,variant:g.variant,seatCount:g.seatCount,startingChips:g.startingChips,started:g.started,street:g.street,board:g.board,pot:g.pot,livePot:g.pot+g.players.reduce((s,p)=>s+p.bet,0),currentBet:g.currentBet,minRaise:g.minRaise,dealer:g.dealer,turn:g.turn,deadline:g.deadline||0,handNo:g.handNo,level:g.level,levelRemain,blinds:blindsFor(g),resultText:g.resultText,allInReveal:g.allInReveal,showdownKind:g.showdownKind||null,players:g.players.map((p,i)=>{
+ const vp=g.players.find(p=>p.id===viewer);const currentHandName=currentBestName(g,vp);return{currentHandName,rev:g.rev||0,room:g.room,hostId:g.hostId,mode:g.mode,variant:g.variant,seatCount:g.seatCount,startingChips:g.startingChips,started:g.started,street:g.street,board:g.board,pot:g.pot,livePot:g.pot+g.players.reduce((s,p)=>s+p.bet,0),currentBet:g.currentBet,minRaise:g.minRaise,dealer:g.dealer,turn:g.turn,deadline:g.deadline||0,handNo:g.handNo,level:g.level,levelRemain,blinds:blindsFor(g),resultText:g.resultText,allInReveal:g.allInReveal,showdownKind:g.showdownKind||null,players:g.players.map((p,i)=>{
    let hole=p.hole.map(()=>null);
    if(p.id===viewer)hole=p.hole.map(x=>x);
    else if(g.allInReveal&&!p.fold)hole=p.hole.map(x=>x);
